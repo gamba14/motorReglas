@@ -4,7 +4,10 @@ app = Flask(__name__)
 
 @app.route('/ruleEngine/create', methods=['POST'])
 def createRule():
-    data = request.get_data()    
-    if p.parseIn(data):
-        return jsonify(response='ok',code=201)
-    return jsonify(response='bad request', code = 403)
+	data = request.get_data()    
+	if p.parseIn(data):
+		return jsonify(response='ok',code=201)
+	return jsonify(response='bad request', code = 403)
+
+if __name__ == "__main__":
+	app.run()

@@ -17,7 +17,7 @@ def parseIn(inJson):
 		print("Error al parsear JSON")
 		return False
 
-#Evalúa si antecedentes y consecuentes estan balanceados
+#Evalua si antecedentes y consecuentes estan balanceados
 def validateConsistency(inData):
 	termSize = len(inData)
 	if termSize == 0:
