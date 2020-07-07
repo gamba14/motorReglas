@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 print('[+] Iniciando motor de reglas . . .')
 parser = p.Parser()	
-mongo = drvr.DbDriver('/home/agustin/proyectos/pyRuleEngine/properties.ini')
+mongo = drvr.DbDriver('./properties.ini')
 digestor = dig.Digestor(mongo)
 
 @app.route('/ruleEngine/create', methods=['POST'])
@@ -31,4 +31,4 @@ def getRoutes():
 	return dumps(data)
 
 if __name__ == "__main__":	
-	app.run()
+	app.run(debug= True, host= '0.0.0.0')
