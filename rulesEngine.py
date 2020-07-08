@@ -3,8 +3,10 @@ import Digestor as dig
 import DbDriver as drvr
 import json
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from bson.json_util import dumps
 app = Flask(__name__)
+CORS(app)
 
 print('[+] Iniciando motor de reglas . . .')
 parser = p.Parser()	
