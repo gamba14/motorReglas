@@ -13,9 +13,10 @@ class Digestor():
 	def digest(self, data):
 		print('[+] Recibo: ', end='\t')
 		print(data)
-		idDisp = "{'id':" + data['id'] + "}"
+		dataJson = json.loads(data)
+		idDisp = "{\"id\":" + str(dataJson['id']) + "}"
 		# El cursor va a tener todas las reglas que matcheen con el id del dispositivo	
-		cursor = mongo.find(json.loads(idDisp))
+		cursor = self.mongo.find(json.loads(idDisp))
 		for regla in cursor:
 			print(regla)
 			ruleEval(regla['antecedents'],int(data['pv']))
