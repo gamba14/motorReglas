@@ -1,5 +1,6 @@
 import DbDriver as dbd
 import json
+import functools
 
 class Digestor():
 
@@ -12,11 +13,12 @@ class Digestor():
 	def digest(self, data):
 		print('[+] Recibo: ', end='\t')
 		print(data)
+		idDisp = "{'id':" + data['id'] + "}"
 		# El cursor va a tener todas las reglas que matcheen con el id del dispositivo	
-		cursor = mongo.find(json.loads(data))
+		cursor = mongo.find(json.loads(idDisp))
 		for regla in cursor:
 			print(regla)
-			ruleEval(regla['antecedents'],int('24'))
+			ruleEval(regla['antecedents'],int(data['pv']))
 		pass
 
 
@@ -36,7 +38,8 @@ class Digestor():
 				elif operator == '<':
 					results.append(1 if int(vs) < pv else 0)
 				else:
-					results.append(-1)
+					if(int(vs) == pv):
+						results.append(-1)
 			else:
 				if '&&' in antecedent:
 					conectors.append(1)
@@ -45,7 +48,14 @@ class Digestor():
 		print(results)
 		print(conectors)
 		# Armar la compuerta dinamica
-		pass
+		# Caso trivial, cuando hay una sola condicion.
+		if len(conectors) == 0:
+			return results[0]		
+		if sum(conectors) > 0:
+			if sum(results) > 0 : return 1
+			return 0
+		else:
+			return functools.reduce(lambda x,y: x*y, results)		
 
 	# def main():
 	# 	print("Reading form file")
