@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from pathlib import Path
+from bson.objectid import ObjectId
 import configparser
 
 class DbDriver():
@@ -37,5 +38,13 @@ class DbDriver():
     def findAll(self):
         try:
             return self.db.reglas.find()
+        except ValueError as identifier:
+            print('[-] Error')
+
+    # Actualiza una regla
+    def update(self, ruleId, data):
+        try:
+            print('[+] Actualizando regla . . . ')
+            return self.db.reglas.replace_one({ "_id": ObjectId(ruleId) }, data)
         except ValueError as identifier:
             print('[-] Error')

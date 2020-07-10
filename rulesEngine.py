@@ -21,6 +21,15 @@ def createRule():
 		return jsonify(response='ok',code=201)
 	return jsonify(response='bad request', code = 403)
 
+@app.route('/ruleEngine/update', methods=['PUT'])
+def updateRule():
+	data = request.get_data()
+	ruleId = request.args.get('id')
+	if parser.parseIn(data):
+		mongo.update(ruleId, json.loads(data))
+		return jsonify(response='ok',code=200)
+	return jsonify(response='bad request', code = 403)
+
 @app.route('/ruleEngine/digestor', methods=['POST'])
 def digestRule():
 	data = request.get_data()
