@@ -19,7 +19,7 @@ class Digestor():
 		cursor = self.mongo.find(json.loads(idDisp))
 		for regla in cursor:
 			print(regla)
-			ruleEval(regla['antecedents'],int(data['pv']))
+			self.ruleEval(regla['antecedents'],dataJson["pv"])
 		pass
 
 
@@ -52,7 +52,7 @@ class Digestor():
 		# Caso trivial, cuando hay una sola condicion.
 		if len(conectors) == 0:
 			return results[0]		
-		if sum(conectors) > 0:
+		if sum(conectors) == 0:
 			if sum(results) > 0 : return 1
 			return 0
 		else:
