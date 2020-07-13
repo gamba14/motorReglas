@@ -1,6 +1,8 @@
 import DbDriver as dbd
 import json
 import functools
+import datetime
+from dateutil.parser import *
 
 class Digestor():
 
@@ -17,6 +19,7 @@ class Digestor():
 		idDisp = "{\"id\":" + str(dataJson['id']) + "}"
 		# El cursor va a tener todas las reglas que matcheen con el id del dispositivo	
 		cursor = self.mongo.find(json.loads(idDisp))
+		self.curTime = datetime.datetime.today()	
 		for regla in cursor:
 			print(regla)
 			self.ruleEval(regla['antecedents'],dataJson["pv"])
@@ -34,13 +37,23 @@ class Digestor():
 			if not 'conector' in antecedent:
 				operator = antecedent['op']
 				vs = antecedent['vs']
-				if operator == '>':
-					results.append(1 if int(vs) > pv else 0)
-				elif operator == '<':
-					results.append(1 if int(vs) < pv else 0)
-				else:
-					if(int(vs) == pv):
+				unit = antecedent['unit']
+				if unit != "horas":
+					if operator == '>':
+						results.append(1 if int(vs) > pv else 0)
+					elif operator == '<':
+						results.append(1 if int(vs) < pv else 0)
+					else:
+						if(int(vs) == pv):
+							results.append(-1)
+				else:					
+					if operator == '>':
+						results.append(1 if parse(vs) > self.curTime else 0)
+					elif operator == '<':
+						results.append(1 if parse(vs) < self.curTime else 0)
+					else:
 						results.append(-1)
+
 			else:
 				if '&&' in antecedent:
 					conectors.append(1)
