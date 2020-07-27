@@ -40,8 +40,8 @@ def digestRule():
 def getRules():
 	data = mongo.findAll()
 	return dumps(data)
-	
-@app.route('/rulesEngine/drop', methods=['POST'])
+
+@app.route('/ruleEngine/drop', methods=['POST'])
 def dropRules():
 	mongo.drop()
 	return jsonify(response='ok',code=201)
