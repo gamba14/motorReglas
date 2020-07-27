@@ -37,9 +37,14 @@ def digestRule():
 	return jsonify(response='ok',code=201)
 
 @app.route('/ruleEngine/rules', methods=['GET'])
-def getRoutes():
+def getRules():
 	data = mongo.findAll()
 	return dumps(data)
+	
+@app.route('/rulesEngine/drop', methods=['POST'])
+def dropRules():
+	mongo.drop()
+	return jsonify(response='ok',code=201)
 
 if __name__ == "__main__":	
 	app.run(debug= True, host= '0.0.0.0')

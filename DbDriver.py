@@ -48,3 +48,8 @@ class DbDriver():
             return self.db.reglas.replace_one({ "_id": ObjectId(ruleId) }, data)
         except ValueError as identifier:
             print('[-] Error')
+    def drop(self):
+        try:
+            self.db.reglas.remove()
+        except ValueError as identifier:
+            print('[-] Error')
