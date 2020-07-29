@@ -2,6 +2,7 @@ import DbDriver as dbd
 import json
 import functools
 import datetime
+import requests
 from dateutil.parser import *
 
 class Digestor():
@@ -13,22 +14,26 @@ class Digestor():
 	# El digestor tiene que recibir la entrada y no tiene que devolver nada al cliente
 	# Tiene que analizar las entradas y tomar la decision manda {"id",{0,1}} depende el valor.
 	def digest(self, data):
+		results = []
 		print('[+] Recibo: ', end='\t')
 		print(data)
 		dataJson = json.loads(data)
-		idDisp = "{\"id\":" + str(dataJson['id']) + "}"
+		idDisp = "{\"antecedents.id1\":" + str(dataJson['id']) + "}"
 		# El cursor va a tener todas las reglas que matcheen con el id del dispositivo	
 		cursor = self.mongo.find(json.loads(idDisp))
 		self.curTime = datetime.datetime.today()	
 		for regla in cursor:
 			print(regla)
-			self.ruleEval(regla['antecedents'],dataJson["pv"])
-		pass
+			results.append(self.ruleEval(regla['antecedents'],dataJson["pv"]))
+		for result in results:
+			strJson = "{\"" + str(dataJson['id']) +"\"," + str(result) + "\"}"
+			self.sendToBroker(strJson)
 
 
 	# Funcion que devuelve al broker la accion a tomar
 	def sendToBroker(self,data):
-		pass
+		url = 'http://docker_shaffiro-app_1:8080/api/receiveAction'
+		requests.post(url,data)
 
 	def ruleEval(self,antecedents, pv):
 		results = [] #0 si no se cumple 1 si se cumple, -1 si no hace nada
