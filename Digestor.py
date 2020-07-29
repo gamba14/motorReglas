@@ -27,7 +27,7 @@ class Digestor():
 			results.append(self.ruleEval(regla['antecedents'],dataJson["pv"]))
 		for result in results:
 			strJson = "{\"" + str(dataJson['id']) +"\"," + str(result) + "\"}"
-			self.sendToBroker(strJson)
+			self.sendToBroker(json.dumps(strJson))
 
 
 	# Funcion que devuelve al broker la accion a tomar
