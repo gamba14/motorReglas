@@ -24,10 +24,11 @@ class Digestor():
 		self.curTime = datetime.datetime.today()	
 		for regla in cursor:
 			print(regla)
+			id2 = regla['consequences'][0]['id2']
 			results.append(self.ruleEval(regla['antecedents'],dataJson["pv"]))
 		for result in results:
 			# strJson = "{\"id\":" + str(dataJson['id']) +"\",\"action\":\"" + str(result) + "\"}"
-			strJson = {'action' : str(result), 'id' : str(dataJson['id'])}
+			strJson = {'action' : str(result), 'id' : str(id2)}
 			# self.sendToBroker(json.dumps(strJson))
 			self.sendToBroker(strJson)
 
