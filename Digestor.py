@@ -32,7 +32,7 @@ class Digestor():
 
 	# Funcion que devuelve al broker la accion a tomar
 	def sendToBroker(self,data):
-		url = 'http://docker_shaffiro-app_1:8080/api/receiveAction'
+		url = 'http://docker_shaffiro-app_1:9000/api/receiveAction'
 		requests.post(url,data)
 
 	def ruleEval(self,antecedents, pv):
