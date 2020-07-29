@@ -34,9 +34,9 @@ class Digestor():
 
 	# Funcion que devuelve al broker la accion a tomar
 	def sendToBroker(self,data):
-		newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		# newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 		url = 'http://docker_shaffiro-app_1:8080/api/receiveAction'
-		requests.post(url, data, headers = newHeaders)
+		requests.post(url,json= data)
 
 	def ruleEval(self,antecedents, pv):
 		results = [] #0 si no se cumple 1 si se cumple, -1 si no hace nada
