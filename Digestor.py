@@ -45,9 +45,9 @@ class Digestor():
 				unit = antecedent['unit']
 				if unit != "horas":
 					if operator == '>':
-						results.append(1 if int(vs) > pv else 0)
+						results.append(1 if int(vs) > int(pv) else 0)
 					elif operator == '<':
-						results.append(1 if int(vs) < pv else 0)
+						results.append(1 if int(vs) < int(pv) else 0)
 					else:
 						if(int(vs) == pv):
 							results.append(-1)
