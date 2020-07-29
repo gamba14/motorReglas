@@ -28,14 +28,15 @@ class Digestor():
 		for result in results:
 			# strJson = "{\"id\":" + str(dataJson['id']) +"\",\"action\":\"" + str(result) + "\"}"
 			strJson = {'action' : str(result), 'id' : str(dataJson['id'])}
-			self.sendToBroker(json.dumps(strJson))
+			# self.sendToBroker(json.dumps(strJson))
+			self.sendToBroker(strJson)
 
 
 	# Funcion que devuelve al broker la accion a tomar
 	def sendToBroker(self,data):
 		newHeaders = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 		url = 'http://docker_shaffiro-app_1:8080/api/receiveAction'
-		requests.post(url,json = data, headers = newHeaders)
+		requests.post(url, data, headers = newHeaders)
 
 	def ruleEval(self,antecedents, pv):
 		results = [] #0 si no se cumple 1 si se cumple, -1 si no hace nada
