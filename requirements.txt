@@ -8,3 +8,4 @@ Werkzeug==0.14.1
 xmlrunner==1.7.7
 pymongo
 python-dateutil
+requests
