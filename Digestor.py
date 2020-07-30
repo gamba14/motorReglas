@@ -58,7 +58,13 @@ class Digestor():
 						results.append(1 if int(pv) > int(vs) else 0)
 					elif operator == '<':
 						logging.debug('[+] Operador <')
-						results.append(1 if int(pv) < int(vs) else 0) #100 749
+						results.append(1 if int(pv) < int(vs) else 0)
+					elif operator == '<=':
+						logging.debug('[+] Operador <=')
+						results.append(1 if int(pv) <= int(vs) else 0)
+					elif operator == '>=':
+						logging.debug('[+] Operador >=')
+						results.append(1 if int(pv) >= int(vs) else 0)	
 					else:
 						if(int(vs) == pv):
 							results.append(-1)
@@ -69,6 +75,12 @@ class Digestor():
 					elif operator == '<':
 						logging.debug('[+] Operador < en horas')
 						results.append(1 if parse(vs) > self.curTime else 0)
+					elif operator == '<=':
+						logging.debug('[+] Operador <= en horas')
+						results.append(1 if parse(vs) >= self.curTime else 0)
+					elif operator == '<':
+						logging.debug('[+] Operador >= en horas')
+						results.append(1 if parse(vs) <= self.curTime else 0)
 					else:
 						results.append(-1)
 
