@@ -5,8 +5,10 @@ import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from bson.json_util import dumps
+import logging
 app = Flask(__name__)
 CORS(app)
+logging.basicConfig(level=logging.DEBUG)
 
 print('[+] Iniciando motor de reglas . . .')
 parser = p.Parser()	
