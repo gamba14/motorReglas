@@ -21,7 +21,8 @@ class Digestor():
 		idDisp = "{\"antecedents.id1\":" + str(dataJson['id']) + "}"
 		# El cursor va a tener todas las reglas que matcheen con el id del dispositivo	
 		cursor = self.mongo.find(json.loads(idDisp))
-		self.curTime = datetime.datetime.today()	
+		self.curTime = datetime.datetime.today()
+		logging.debug('[+] Hora del servidor ' + self.curTime)	
 		for regla in cursor:
 			print(regla)
 			id2 = regla['consequences'][0]['id2']
