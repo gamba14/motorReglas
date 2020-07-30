@@ -26,11 +26,7 @@ class Digestor():
 			print(regla)
 			id2 = regla['consequences'][0]['id2']
 			accion = regla['consequences'][0]['action']
-			results.append(self.ruleEval(regla['antecedents'],dataJson["pv"], accion)) #[0,1]
-		#for result in results: #[1,1,0,-1]
-			# strJson = "{\"id\":" + str(dataJson['id']) +"\",\"action\":\"" + str(result) + "\"}"
-		# strJson = {'action' : str(result), 'id' : str(id2)}
-			# self.sendToBroker(json.dumps(strJson))
+			results.append(self.ruleEval(regla['antecedents'],dataJson["pv"], accion)) #[0,1]		
 		if (0 in results):
 			strJson = {'action' : '0', 'id' : str(id2)}		
 			self.sendToBroker(strJson)
@@ -50,6 +46,8 @@ class Digestor():
 		results = [] #0 si no se cumple 1 si se cumple, -1 si no hace nada
 		conectors = [] #0 es una OR y 1 es una and
 		for antecedent in antecedents:
+			print('[+]',end='\t')
+			print(antecedent)
 			if not 'conector' in antecedent:
 				operator = antecedent['op']
 				vs = antecedent['vs']
@@ -77,15 +75,6 @@ class Digestor():
 					conectors.append(0)
 		print(results)
 		print(conectors)
-		# Armar la compuerta dinamica
-		# Caso trivial, cuando hay una sola condicion.
-		# if len(conectors) == 0:
-		# 	return results[0]		
-		# if sum(conectors) == 0:
-		# 	if sum(results) > 0 : return 1
-		# 	return 0
-		# else:
-		# 	return functools.reduce(lambda x,y: x*y, results)
 		return self.inferrAction(valorAccion,results, conectors)		
 	
 	def inferrAction(self, accion, results, conectors):
@@ -94,13 +83,13 @@ class Digestor():
 				return accion
 			else:
 				return -1
-			if sum(conectors) == 0:
-				if sum(results) > 0 : 
-					return accion
-				return -1
+		if sum(conectors) == 0:
+			if sum(results) > 0 : 
+				return accion
+			return -1
+		else:
+			if (functools.reduce(lambda x,y: x*y, results) == 1):
+				return accion
 			else:
-				if (functools.reduce(lambda x,y: x*y, results) == 1):
-					return accion
-				else:
-					return -1
+				return -1
 	
