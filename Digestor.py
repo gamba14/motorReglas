@@ -86,21 +86,21 @@ class Digestor():
 		# 	return 0
 		# else:
 		# 	return functools.reduce(lambda x,y: x*y, results)
-		return self.inferrAction(accion,results, conectors)		
+		return self.inferrAction(valorAccion,results, conectors)		
 	
 	def inferrAction(self, accion, results, conectors):
 		if len(conectors) == 0:
 			if results[0] == 1:
-				return valorAccion
+				return accion
 			else:
 				return -1
 			if sum(conectors) == 0:
 				if sum(results) > 0 : 
-					return valorAccion
+					return accion
 				return -1
 			else:
 				if (functools.reduce(lambda x,y: x*y, results) == 1):
-					return valorAccion
+					return accion
 				else:
 					return -1
 	
