@@ -16,7 +16,6 @@ class Digestor():
 	# Tiene que analizar las entradas y tomar la decision manda {"id",{0,1}} depende el valor.
 	def digest(self, data):
 		results = []
-		logging.debug('[+] Recibo: ', end='\t')
 		logging.debug(data)
 		dataJson = json.loads(data)
 		idDisp = "{\"antecedents.id1\":" + str(dataJson['id']) + "}"
@@ -47,7 +46,6 @@ class Digestor():
 		results = [] #0 si no se cumple 1 si se cumple, -1 si no hace nada
 		conectors = [] #0 es una OR y 1 es una and
 		for antecedent in antecedents:
-			logging.debug('[+]',end='\t')
 			logging.debug(antecedent)
 			if not 'conector' in antecedent:
 				operator = antecedent['op']
