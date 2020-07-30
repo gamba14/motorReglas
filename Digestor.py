@@ -25,11 +25,17 @@ class Digestor():
 		for regla in cursor:
 			print(regla)
 			id2 = regla['consequences'][0]['id2']
-			results.append(self.ruleEval(regla['antecedents'],dataJson["pv"]))
-		for result in results:
+			accion = regla['consequences'][0]['action']
+			results.append(self.ruleEval(regla['antecedents'],dataJson["pv"], accion)) #[0,1]
+		#for result in results: #[1,1,0,-1]
 			# strJson = "{\"id\":" + str(dataJson['id']) +"\",\"action\":\"" + str(result) + "\"}"
-			strJson = {'action' : str(result), 'id' : str(id2)}
+		# strJson = {'action' : str(result), 'id' : str(id2)}
 			# self.sendToBroker(json.dumps(strJson))
+		if (0 in results):
+			strJson = {'action' : '0', 'id' : str(id2)}		
+			self.sendToBroker(strJson)
+		elif (1 in results):
+			strJson = {'action' : '1', 'id' : str(id2)}
 			self.sendToBroker(strJson)
 
 
@@ -39,7 +45,8 @@ class Digestor():
 		url = 'http://docker_shaffiro-app_1:8080/api/receiveAction'
 		requests.post(url,json= data)
 
-	def ruleEval(self,antecedents, pv):
+	def ruleEval(self,antecedents, pv, accion):
+		valorAccion = 1 if accion == 'on' else 0
 		results = [] #0 si no se cumple 1 si se cumple, -1 si no hace nada
 		conectors = [] #0 es una OR y 1 es una and
 		for antecedent in antecedents:
@@ -72,18 +79,28 @@ class Digestor():
 		print(conectors)
 		# Armar la compuerta dinamica
 		# Caso trivial, cuando hay una sola condicion.
+		# if len(conectors) == 0:
+		# 	return results[0]		
+		# if sum(conectors) == 0:
+		# 	if sum(results) > 0 : return 1
+		# 	return 0
+		# else:
+		# 	return functools.reduce(lambda x,y: x*y, results)
+		return inferrAction(accion,results, conectors)		
+	
+	def inferrAction(self, accion, results, conectors):
 		if len(conectors) == 0:
-			return results[0]		
-		if sum(conectors) == 0:
-			if sum(results) > 0 : return 1
-			return 0
-		else:
-			return functools.reduce(lambda x,y: x*y, results)		
-
-	# def main():
-	# 	print("Reading form file")
-	# 	with open('/home/agustin/proyectos/pyRuleEngine/message.txt','r') as f:
-	# 		data = f.read()	
-	# 		digest(data)
-	# if __name__ == "__main__":
-	# 	main()
+			if results[0] == 1:
+				return valorAccion
+			else:
+				return -1
+			if sum(conectors) == 0:
+				if sum(results) > 0 : 
+					return valorAccion
+				return -1
+			else:
+				if (functools.reduce(lambda x,y: x*y, results) == 1):
+					return valorAccion
+				else:
+					return -1
+	
