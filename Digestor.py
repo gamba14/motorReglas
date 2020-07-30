@@ -52,43 +52,56 @@ class Digestor():
 				vs = antecedent['vs']
 				unit = antecedent['unit']
 				if unit != "horas":
+					logging.debug('[+] La unidad no es horas')
 					if operator == '>':
+						logging.debug('[+] Operador >')
 						results.append(1 if int(pv) > int(vs) else 0)
 					elif operator == '<':
+						logging.debug('[+] Operador <')
 						results.append(1 if int(pv) < int(vs) else 0) #100 749
 					else:
 						if(int(vs) == pv):
 							results.append(-1)
 				else:					
 					if operator == '>':
+						logging.debug('[+] Operador > en horas')
 						results.append(1 if parse(vs) < self.curTime else 0)
 					elif operator == '<':
+						logging.debug('[+] Operador < en horas')
 						results.append(1 if parse(vs) > self.curTime else 0)
 					else:
 						results.append(-1)
 
 			else:
 				if '&&' in antecedent:
+					logging.debug('[+] conector &&')
 					conectors.append(1)
 				else:
+					logging.debug('[+] conector ||')
 					conectors.append(0)
-		print(results)
-		print(conectors)
+		logging.debug(results)
+		logging.debug(conectors)
 		return self.inferrAction(valorAccion,results, conectors)		
 	
 	def inferrAction(self, accion, results, conectors):
 		if len(conectors) == 0:
 			if results[0] == 1:
+				logging.debug('[+] Sin conectores, regla cumplida >')
 				return accion
 			else:
+				logging.debug('[+] Sin conectores, regla no cumplida >')
 				return -1
 		if sum(conectors) == 0:
-			if sum(results) > 0 : 
+			if sum(results) > 0 :
+				logging.debug('[+] Con conectores OR, regla cumplida >') 
 				return accion
+			logging.debug('[+] Con conectores OR, regla no cumplida >') 	
 			return -1
 		else:
 			if (functools.reduce(lambda x,y: x*y, results) == 1):
+				logging.debug('[+] Con conectores AND, regla cumplida >') 
 				return accion
 			else:
+				logging.debug('[+] Con conectores AND, regla no cumplida >') 
 				return -1
 	
