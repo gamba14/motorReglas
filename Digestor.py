@@ -73,7 +73,7 @@ class Digestor():
 						results.append(-1)
 
 			else:
-				if '&&' in antecedent:
+				if '&&' in antecedent['conector']:
 					logging.debug('[+] conector &&')
 					conectors.append(1)
 				else:
