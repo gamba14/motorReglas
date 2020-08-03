@@ -53,3 +53,8 @@ class DbDriver():
             self.db.reglas.remove()
         except ValueError as identifier:
             print('[-] Error')
+    def delete(self, id):
+        try:
+            self.db.regla.delete_one(id)
+        except ValueError as identifier:
+            print('[-] Errror')

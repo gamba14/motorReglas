@@ -48,5 +48,10 @@ def dropRules():
 	mongo.drop()
 	return jsonify(response='ok',code=201)
 
+@app.route('/ruleEngine/delete/<id>')
+def deleteRule(id):
+	return jsonify(response='ok',code=201)
+
+	
 if __name__ == "__main__":	
 	app.run(debug= True, host= '0.0.0.0')
